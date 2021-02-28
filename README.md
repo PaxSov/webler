@@ -9,9 +9,15 @@ http/https
 
 Roadmap:
 export to txt
-WOT (Web Of Trust) score
-ip address (and info gained from that)
-privacyscore.org score
-options for things
 
-I may think of more for the program
+WOT (Web Of Trust) score
+
+ip address (and info gained from that)
+
+privacyscore.org score (low chance of happening)
+
+Command line addons
+
+More May be thought of
+
+Gemini/gopher support is not planned
