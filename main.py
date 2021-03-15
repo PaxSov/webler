@@ -5,21 +5,22 @@
 
 import requests, sys, re
 
-url = sys.argv[2]
-opt = sys.argv[1]
+def helpMessage():
+    print('Webler, a command line program that gives into about a url')
+    print('Usage: webler {option} {url}')
+    print('Option 1 = google.com')
+    print('Option 2 = https://google.com')
+    print('Option 3 = www.https://google.com')
+    print('This program uses the MIT license | THERE IS NO WARRENTY')
+
+try:
+    url = sys.argv[2]
+    opt = sys.argv[1]
+except:
+    helpMessage()
 
 def secureCheck(optSelect):
-    if optSelect == 0:
-        try:
-            requests.get("https://" + str(url))
-            print("Url is secure")
-        except:
-            try:
-                requests.get("http://" + str(url))
-                print("Url is insecure")
-            except:
-                print("Url is unreachable")
-    elif optSelect == 1:
+    if optSelect == 1:
         try:
             requests.get("https://" + str(url))
             print("Url is secure")
@@ -30,6 +31,18 @@ def secureCheck(optSelect):
             except:
                 print("Url is unreachable")
     elif optSelect == 2:
+        re.sub('https://','',url)
+        re.sub('http://','',url)
+        try:
+            requests.get("https://" + str(url))
+            print("Url is secure")
+        except:
+            try:
+                requests.get("http://" + str(url))
+                print("Url is insecure")
+            except:
+                print("Url is unreachable")
+    elif optSelect == 3:
         try:
             requests.get(str(url))
             print("Url is secure")
@@ -42,7 +55,10 @@ def secureCheck(optSelect):
 
 
 
-secureCheck(optSelect)
+try:
+    secureCheck(optSelect)
+except:
+    pass
 
 
 # TODO: Allow full url to be entered
@@ -50,3 +66,4 @@ secureCheck(optSelect)
 # The different functions are for then all to work
 # Add help option
 # Use argparse
+# Option 0 = default
