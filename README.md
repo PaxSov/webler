@@ -4,7 +4,7 @@ Webler is a command line program made with python where you can type in a url an
 # Progress %
 10
 
-#Features added:
+# Features added:
 - http/https
 
 - Being able to enter urls containing www and http
