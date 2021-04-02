@@ -8,9 +8,6 @@ import requests, sys, re
 def helpMessage():
     print('Webler, a command line program that gives into about a url')
     print('Usage: webler {option} {url}')
-    print('Option 1 = google.com')
-    print('Option 2 = https://google.com')
-    print('Option 3 = www.https://google.com')
     print('This program uses the MIT license | THERE IS NO WARRENTY')
 
 try:
