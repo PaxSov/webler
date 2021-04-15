@@ -1,30 +1,33 @@
 #!/usr/bin/env python3
 # Webler, a command line program that gives info about a url
-# Branch: options-test
 
+import requests, re, argparse
 
-import requests, sys, re
+# Argparse Things
+parser = argparse.ArgumentParser()
+parser.add_argument("url", help="Enter a Url e.g python.org")
+parser.add_argument("-e", "--export-to-txt", help="Export The Program's Output To a Text File", action="store_true")
+parser.add_argument("-w", "--web-of-trust", help="Show web of trust score", action="store_true")
+parser.add_argument("-i", "--show-ip", help="Show ip of url", action="store_true")
+parser.add_argument("-ip", "--show-ip-info", help="Show information about the ip of the url", action="store_true")
+args = parser.parse_args()
 
-def helpMessage():
-    print('Webler, a command line program that gives into about a url')
-    print('Usage: webler {option} {url}')
-    print('This program uses the MIT license | THERE IS NO WARRENTY')
+if args.url:
+    pass
+else:
+    print("You need to enter a url")
+    exit()
 
-try:
-    url = sys.argv[1]
-except:
-    helpMessage()
-
-def secureCheck(optSelect):
-    re.sub('www', '', url)    
-    re.sub('https://','',url)
-    re.sub('http://','',url)
+def secureCheck():
+    re.sub('www', '', args.url)    
+    re.sub('https://','',args.url)
+    re.sub('http://','',args.url)
     try:
-        requests.get("https://" + str(url))
+        requests.get("https://" + str(args.url))
         print("Url is secure")
     except:
         try:
-            requests.get("http://" + str(url))
+            requests.get("http://" + str(args.url))
             print("Url is insecure")
         except:
             print("Url is unreachable")
@@ -32,14 +35,6 @@ def secureCheck(optSelect):
 
 
 try:
-    secureCheck(optSelect)
+    secureCheck()
 except:
     pass
-
-
-# TODO: Allow full url to be entered
-# TODO: Option 0 = google.com entered | Option 1: https://google.com entered | Option 2: www.https://google.com entered
-# The different functions are for then all to work
-# Add help option
-# Use argparse
-# Option 0 = default
