@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Webler, a command line program that gives info about a url
 
-import requests, argparse, re
+import requests, argparse, re, os
 from selenium import webdriver
 from time import sleep
 
@@ -20,11 +20,20 @@ def getScreenShot(browser):
     elif browser == 2:
         driver = webdriver.Firefox()
 
-    driver.get(str(args.url))
+    driver.get(str("http://" + args.url))
     sleep(1)
 
     driver.get_screenshot_as_file("screenshot.png")
+
     driver.quit()
+    
+    cwd = os.getcwd()
+    if browser == 2:
+        geckoLogFile = os.path.join(cwd, "geckodriver.log")
+        os.remove(geckoLogFile)
+    else:
+        pass
+
 
 if args.url:
     pass
@@ -57,5 +66,5 @@ if args.saveScreenShot:
     try:
         getScreenShot(1)
     except:
-        print("Do you have google chrome installed? | Attemping Firefox")
+        print("Do you have google chrome installed? | Attemping Firefox / Geckodriver")
         getScreenShot(2)
