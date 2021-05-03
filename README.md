@@ -8,7 +8,7 @@ argparse
 Roadmap:
 export to txt
 
-WOT (Web Of Trust) score
+WOT (Web Of Trust) score | Scrapped due to not allowing scraping, an api with limited requests is needed
 
 ip address (and info gained from that)
 
