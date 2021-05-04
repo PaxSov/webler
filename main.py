@@ -4,6 +4,14 @@
 import requests, argparse, re, os
 from selenium import webdriver
 from time import sleep
+from sockets import gethostbyname
+from ipwhois import IPWhois
+from pprint import pprint
+
+# Alias
+getDomainIp = socket.gethostbyname("www." + args.url)
+ipLookUp = IPWhois(getDomainIp)
+ipInfo = ipLookup.lookup()
 
 # Argparse Things
 parser = argparse.ArgumentParser()
@@ -41,16 +49,6 @@ else:
     print("You need to enter a url")
     exit()
 
-def helpMessage():
-    print('Webler, a command line program that gives info about a url')
-    print('Usage: webler {url}')
-    print('This program uses the MIT license | THERE IS NO WARREATY')
-
-try:
-    url = sys.argv[1]
-except:
-    helpMessage()
-
 def secureCheck():
     args.url = str(args.url)
     args.url = re.sub(r"www", "", args.url)    
@@ -66,7 +64,9 @@ def secureCheck():
         except:
             print("Url is unreachable")
 
-
+def ipOption():
+    print("Url Ip: ", getDomainIp)
+    pprint(ipInfo)
 
 try:
     secureCheck()
@@ -82,7 +82,3 @@ try:
     secureCheck()
 except:
     pass
-
-
-# Add help option
-# Use argparse
