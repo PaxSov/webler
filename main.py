@@ -4,14 +4,10 @@
 import requests, argparse, re, os
 from selenium import webdriver
 from time import sleep
-from sockets import gethostbyname
+from socket import gethostbyname
 from ipwhois import IPWhois
 from pprint import pprint
-
-# Alias
-getDomainIp = socket.gethostbyname("www." + args.url)
-ipLookUp = IPWhois(getDomainIp)
-ipInfo = ipLookup.lookup()
+# from iplookup import lookup
 
 # Argparse Things
 parser = argparse.ArgumentParser()
@@ -21,6 +17,17 @@ parser.add_argument("-s", "--save-screenshot", dest="saveScreenShot", help="Save
 parser.add_argument("-i", "--show-ip", dest="showIp", help="Show ip of url", action="store_true")
 parser.add_argument("-ip", "--show-ip-info", dest="showIpInfo", help="Show information about the ip of the url", action="store_true")
 args = parser.parse_args()
+
+# Alias
+getDomainIp = gethostbyname("www." + args.url)
+# ipLookUp = IPWhois(getDomainIp)
+ipInfo = getDomainIp.IPWhois.lookup()
+
+if args.makeTxt:
+    txt = True
+    file = open('output.txt', 'a+')
+    file.write("Url is ", args.url)
+    file.close
 
 def getScreenShot(browser):
     if browser == 1:
@@ -36,6 +43,11 @@ def getScreenShot(browser):
     driver.quit()
     
     cwd = os.getcwd()
+    if txt == True:
+        file.write("A Screenshot was taken")
+        file.close()
+    else:
+        pass
     if browser == 2:
         geckoLogFile = os.path.join(cwd, "geckodriver.log")
         os.remove(geckoLogFile)
@@ -57,6 +69,9 @@ def secureCheck():
     try:
         requests.get("https://" + str(args.url))
         print("Url is secure")
+        if txt == True:
+            file.write("Url Is Secure")
+
     except:
         try:
             requests.get("http://" + str(args.url))
@@ -67,6 +82,9 @@ def secureCheck():
 def ipOption():
     print("Url Ip: ", getDomainIp)
     pprint(ipInfo)
+    if txt == True:
+        file.write(pprint(ipInfo))
+        file.close()
 
 try:
     secureCheck()
@@ -82,3 +100,4 @@ try:
     secureCheck()
 except:
     pass
+# TODO finish that export to txt feature
