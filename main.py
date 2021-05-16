@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 # Webler, a command line program that gives info about a url
 
-import requests, argparse, re, os
+import requests, argparse, re, os, whois
 from selenium import webdriver
 from time import sleep
 from socket import gethostbyname
-from ipwhois import IPWhois
 from pprint import pprint
-# from iplookup import lookup
 
 # Argparse Things
 parser = argparse.ArgumentParser()
@@ -20,15 +18,19 @@ args = parser.parse_args()
 
 # Alias
 getDomainIp = gethostbyname("www." + args.url)
-# ipLookUp = IPWhois(getDomainIp)
-ipInfo = getDomainIp.IPWhois.lookup()
+ipLookUp = whois.whois(args.url)
+
+# Vars
+txt = False
 
 if args.makeTxt:
     txt = True
-    file = open('output.txt', 'a+')
-    file.write("Url is ", args.url)
+    os.remove("webler-output.txt")
+    file = open('webler-output.txt', 'a+')
+    file.write("Url is " + args.url)
     file.close
-
+else:
+    pass
 def getScreenShot(browser):
     if browser == 1:
         driver = webdriver.Chrome()
@@ -49,7 +51,6 @@ def getScreenShot(browser):
     else:
         pass
     if browser == 2:
-        geckoLogFile = os.path.join(cwd, "geckodriver.log")
         os.remove(geckoLogFile)
     else:
         pass
@@ -69,9 +70,13 @@ def secureCheck():
     try:
         requests.get("https://" + str(args.url))
         print("Url is secure")
-        if txt == True:
-            file.write("Url Is Secure")
-
+        try:
+            if txt == True:
+                file.write("\nUrl Is Secure")
+            else:
+                pass
+        except:
+            pass
     except:
         try:
             requests.get("http://" + str(args.url))
@@ -81,10 +86,12 @@ def secureCheck():
 
 def ipOption():
     print("Url Ip: ", getDomainIp)
-    pprint(ipInfo)
+    pprint(ipLookUp)
     if txt == True:
-        file.write(pprint(ipInfo))
+        file.write(str(ipLookUp))
         file.close()
+    else:
+        pass
 
 try:
     secureCheck()
@@ -96,8 +103,5 @@ if args.saveScreenShot:
     except:
         print("Do you have google chrome installed? | Attemping Firefox / Geckodriver")
         getScreenShot(2)
-try:
-    secureCheck()
-except:
-    pass
-# TODO finish that export to txt feature
+if args.showIpInfo:
+    ipOption()
